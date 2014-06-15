@@ -41,5 +41,21 @@ describe('#teamicty namespace', function() {
 			delete process.env.TEAMCITY_VERSION;
 
 		});
+
+		it('should return false if env variable TEAMCITY_VERSION not provided', function() {
+			teamcity.isCiRun().should.equal(false);
+		});
+	});
+
+	describe('#getProperty', function() {
+		it('should read return property value from properties file (TEAMCITY_BUILD_PROPERTIES_FILE)', function() {
+			process.env.TEAMCITY_VERSION = '123';
+			process.env.TEAMCITY_BUILD_PROPERTIES_FILE = './testprops';
+
+			teamcity.getProperty('test_var').should.equal('testVal');
+
+			delete process.env.TEAMCITY_BUILD_PROPERTIES_FILE;
+			delete process.env.TEAMCITY_VERSION;
+		});
 	});
 });

@@ -1,0 +1,9 @@
+test_var testVal
+
+[web]
+hostname 10.10.10.10
+port 1234
+
+[db]
+hostname 10.10.10.20
+port 4321

@@ -22,5 +22,8 @@
     "sinon": "~1.10.2",
     "rimraf": "~2.2.8",
     "ncp": "~0.5.1"
+  },
+  "dependencies": {
+    "properties": "~1.2.1"
   }
 }
