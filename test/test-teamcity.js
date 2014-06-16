@@ -29,7 +29,25 @@ describe('#teamicty namespace', function() {
 			teamcity.setBuildVersion();
 			console.log = originalLog;
 
+			spy.calledWith("##teamcity[buildNumber '1.3.23-snapshot #{build.number}']").should.equal(true);
+		});
+
+		it('should append "snapshot" suffix if build.type is not one of (major, minor, patch)', function() {
+			var originalLog = console.log,
+				spy;
+
+			process.env.TEAMCITY_VERSION = '123';
+			process.env.TEAMCITY_BUILD_PROPERTIES_FILE = './testprops';
+
+			spy = sinon.spy();
+			console.log = spy;
+			teamcity.setBuildVersion();
+			console.log = originalLog;
+
 			spy.calledWith("##teamcity[buildNumber '1.3.23 #{build.number}']").should.equal(true);
+
+			delete process.env.TEAMCITY_BUILD_PROPERTIES_FILE;
+			delete process.env.TEAMCITY_VERSION;
 		});
 	});
 

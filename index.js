@@ -1,12 +1,14 @@
 var fs = require('fs'),
 	propertiesParser = require('properties').parse,
+	buildTypes = ['major', 'minor', 'patch'],
 
 	teamcity = {};
 
 teamcity.setBuildVersion = function setBuildVersion() {
-	var pkg = require(process.cwd() + '/package.json');
+	var pkg = require(process.cwd() + '/package.json'),
+		isSnapshot = buildTypes.indexOf(this.getProperty('build.type')) < 0;
 
-	console.log("##teamcity[buildNumber '" + pkg.version + " #{build.number}']");
+	console.log("##teamcity[buildNumber '" + pkg.version + (isSnapshot ? '-snapshot' : '') + " #{build.number}']");
 };
 
 teamcity.isCiRun = function isCiRun() {
