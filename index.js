@@ -1,11 +1,13 @@
 var fs = require('fs'),
+	Q = require('q'),
 	propertiesParser = require('properties').parse,
 	buildTypes = ['major', 'minor', 'patch'],
 
-	teamcity = {};
+	teamcity = {},
+	release = {};
 
 teamcity.setBuildVersion = function setBuildVersion() {
-	var pkg = require(process.cwd() + '/package.json'),
+	var pkg = JSON.parse(fs.readFileSync(process.cwd() + '/package.json', 'utf-8')),
 		isSnapshot = buildTypes.indexOf(this.getProperty('build.type')) < 0;
 
 	console.log("##teamcity[buildNumber '" + pkg.version + (isSnapshot ? '-snapshot' : '') + " #{build.number}']");
@@ -32,12 +34,29 @@ teamcity.getProperty = function getProperty(name) {
 		console.log('[INFO]: Running ' + (teamcity.isCiRun() ? '' : 'NOT ') + 'under TeamCity');
 	}
 
-
-
 	return result;
+};
+
+release.versionBump = function versionBump(type) {
+	var pkgFile = process.cwd() + '/package.json',
+		pkg = JSON.parse(fs.readFileSync(pkgFile)),
+		versionParts = pkg.version.split('.'),
+		typePos;
+
+	type = type || '';
+
+	typePos = buildTypes.indexOf(type.toLowerCase());
+
+	if (typePos > -1) {
+		versionParts[typePos]++;
+
+		pkg.version = versionParts.join('.');
+		fs.writeFileSync(pkgFile, JSON.stringify(pkg, undefined, 4));
+	}
 };
 
 
 module.exports = {
-	teamcity: teamcity
+	teamcity: teamcity,
+	release: release
 };
