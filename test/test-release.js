@@ -26,7 +26,7 @@ describe('#release namespace', function() {
 			release.versionBump("major", function() {
 				var pkg = require(process.cwd() + '/package.json');
 
-				pkg.version.should.equal('2.3.23');
+				pkg.version.should.equal('2.0.0');
 				done();
 			});
 		});
@@ -35,7 +35,7 @@ describe('#release namespace', function() {
 			release.versionBump("minor", function() {
 				var pkg = JSON.parse(fs.readFileSync(process.cwd() + '/package.json', 'utf-8'));
 
-				pkg.version.should.equal('1.4.23');
+				pkg.version.should.equal('1.4.0');
 				done();
 			});
 		});
@@ -72,7 +72,7 @@ describe('#release namespace', function() {
 			release.versionBump("minor", function() {
 				var bowerPkg = JSON.parse(fs.readFileSync(process.cwd() + '/bower.json', 'utf-8'));
 
-				bowerPkg.version.should.equal('1.4.23');
+				bowerPkg.version.should.equal('1.4.0');
 				done();
 			});
 		});
