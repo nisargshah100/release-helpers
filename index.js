@@ -1,5 +1,4 @@
 var fs = require('fs'),
-	Q = require('q'),
 	propertiesParser = require('properties').parse,
 	buildTypes = ['major', 'minor', 'patch'],
 
