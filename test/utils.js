@@ -1,31 +1,30 @@
-var rimraf = require('rimraf'),
-	ncp = require('ncp'),
+	var rimraf = require('rimraf'),
+		ncp = require('ncp'),
+		exec = require('child_process').exec,
 
-	CASES_FOLDER = './test/cases/';
-
-
-
-module.exports = function(folder) {
-	return new function() {
-		var TMP_FOLDER = './test/' + folder,
-			restoreDirName;
+		TMP_FOLDER = './test/tmp',
+		CASES_FOLDER = './test/cases/',
+		restoreDirName,
+		utils = {};
 
 
-		this.setCase = function(caseFolder, cb) {
-			var casePath = CASES_FOLDER + caseFolder;
+utils.setCase = function(caseFolder, cb) {
+	var casePath = CASES_FOLDER + caseFolder;
 
-			restoreDirName = process.cwd();
+	restoreDirName = process.cwd();
 
-			ncp(casePath, TMP_FOLDER, function() {
-				process.chdir(TMP_FOLDER);
-				cb();
-			});
-		};
-
-		this.restore = function(cb) {
-			process.chdir(restoreDirName);
-			rimraf.sync(TMP_FOLDER);
-			cb();
-		};
-	};
+	ncp(casePath, TMP_FOLDER, function() {
+		process.chdir(TMP_FOLDER);
+		cb();
+	});
 };
+
+utils.restore = function(cb) {
+	process.chdir(restoreDirName);
+
+	rimraf(TMP_FOLDER, function() {
+		cb();
+	});
+};
+
+module.exports = utils;

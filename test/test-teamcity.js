@@ -1,6 +1,6 @@
 var chai = require('chai'),
 	sinon = require('sinon'),
-	utils = require('./utils.js')('tmp-teamcity');
+	utils = require('./utils.js');
 
 chai.should();
 
