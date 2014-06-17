@@ -21,6 +21,8 @@ describe('#release namespace', function() {
 	});
 
 	describe('#versionBump', function() {
+		this.timeout(5000);
+
 		it('should update major version if "major" argument provided', function(done) {
 
 			release.versionBump("major", function() {

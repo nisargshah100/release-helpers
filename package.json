@@ -24,6 +24,7 @@
     "ncp": "~0.5.1"
   },
   "dependencies": {
-    "properties": "~1.2.1"
+    "properties": "~1.2.1",
+    "q": "~1.0.1"
   }
 }
