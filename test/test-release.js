@@ -1,5 +1,6 @@
 var chai = require('chai'),
 	fs = require('fs'),
+	rimraf = require('rimraf'),
 	utils = require('./utils.js')('tmp-release');
 
 chai.should();
@@ -67,5 +68,25 @@ describe('#release namespace', function() {
 			pkg = JSON.parse(fs.readFileSync(process.cwd() + '/package.json', 'utf-8'));
 			pkg.version.should.equal('1.3.23');
 		});
+
+		it('should update version in bower.json file', function() {
+			var bowerPkg;
+
+			release.versionBump("minor");
+
+			bowerPkg = JSON.parse(fs.readFileSync(process.cwd() + '/bower.json', 'utf-8'));
+
+			bowerPkg.version.should.equal('1.4.23');
+		});
+
+		it('should not throw error if project without bower.json', function() {
+			rimraf.sync(process.cwd() + '/bower.json');
+
+			function testFunc () {
+				release.versionBump('minor');
+			}
+
+			testFunc.should.to.not.throw();
+		})
 	});
 });
