@@ -6,10 +6,9 @@ var fs = require('fs'),
 	release = {};
 
 teamcity.setBuildVersion = function setBuildVersion() {
-	var pkg = JSON.parse(fs.readFileSync(process.cwd() + '/package.json', 'utf-8')),
-		isSnapshot = buildTypes.indexOf(this.getProperty('build.type')) < 0;
+	var pkg = JSON.parse(fs.readFileSync(process.cwd() + '/package.json', 'utf-8'));
 
-	console.log("##teamcity[buildNumber '" + pkg.version + (isSnapshot ? '-snapshot' : '') + " #{build.number}']");
+	console.log("##teamcity[buildNumber '" + pkg.version + "{build.number}']");
 };
 
 teamcity.isCiRun = function isCiRun() {
