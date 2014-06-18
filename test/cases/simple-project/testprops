@@ -1,5 +1,5 @@
 test_var testVal
-build.type minor
+release.type minor
 
 [web]
 hostname 10.10.10.10

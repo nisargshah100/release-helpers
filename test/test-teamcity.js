@@ -31,6 +31,26 @@ describe('#teamicty namespace', function() {
 
 			spy.calledWith("##teamcity[buildNumber '1.3.23{build.number}']").should.equal(true);
 		});
+
+		it('should not append teamcity build number if one of following release types provided by teamcity (major, minor, patch)', function() {
+			var originalLog = console.log,
+				spy;
+
+
+			process.env.TEAMCITY_VERSION = '123';
+			process.env.TEAMCITY_BUILD_PROPERTIES_FILE = './testprops';
+
+			spy = sinon.spy();
+			console.log = spy;
+			teamcity.setBuildVersion();
+			console.log = originalLog;
+
+			spy.calledWith("##teamcity[buildNumber '1.3.23']").should.equal(true);
+
+
+			delete process.env.TEAMCITY_BUILD_PROPERTIES_FILE;
+			delete process.env.TEAMCITY_VERSION;
+		});
 	});
 
 	describe('#isCiRun', function() {
